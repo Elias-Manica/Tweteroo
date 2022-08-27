@@ -42,6 +42,13 @@ app.post("/sign-up", (req, res) => {
     return;
   }
 
+  const userLogin = users.find((value) => value.username === username);
+
+  if (userLogin) {
+    res.status(400).send("Usuário já logado");
+    return;
+  }
+
   users.push({
     username,
     avatar,
