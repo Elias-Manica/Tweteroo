@@ -49,13 +49,19 @@ app.post("/sign-up", (req, res) => {
 app.post("/tweets", (req, res) => {
   const { username, tweet } = req.body;
 
-  tweets.push({
-    username,
-    tweet,
-    id: tweets.length + 1,
-  });
+  const userPost = users.find((value) => value.username === username);
 
-  res.send("OK");
+  if (userPost) {
+    tweets.push({
+      username,
+      tweet,
+      id: tweets.length + 1,
+    });
+    res.send("OK");
+    return;
+  }
+
+  res.send({ error: "Não há nenhum usuário cadastrado com esse nome" });
 });
 
 app.get("/users", (req, res) => {
@@ -63,7 +69,16 @@ app.get("/users", (req, res) => {
 });
 
 app.get("/tweets", (req, res) => {
-  res.send(tweets);
+  let tenTweets = [];
+
+  for (let i = tweets.length - 1; i >= 0; i--) {
+    if (tenTweets.length >= 10) {
+      break;
+    }
+    tenTweets.push(tweets[i]);
+  }
+
+  res.send(tenTweets);
 });
 
 app.listen(5000, () => {
