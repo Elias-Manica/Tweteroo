@@ -37,17 +37,27 @@ let tweets = [
 app.post("/sign-up", (req, res) => {
   const { username, avatar } = req.body;
 
+  if (!username || !avatar) {
+    res.status(400).send("Todos os campos são obrigatórios!");
+    return;
+  }
+
   users.push({
     username,
     avatar,
     id: users.length + 1,
   });
 
-  res.send("OK");
+  res.status(201).send("OK");
 });
 
 app.post("/tweets", (req, res) => {
   const { username, tweet } = req.body;
+
+  if (!username || !tweet) {
+    res.status(400).send("Todos os campos são obrigatórios!");
+    return;
+  }
 
   const userPost = users.find((value) => value.username === username);
 
@@ -57,11 +67,13 @@ app.post("/tweets", (req, res) => {
       tweet,
       id: tweets.length + 1,
     });
-    res.send("OK");
+    res.status(201).send("OK");
     return;
   }
 
-  res.send({ error: "Não há nenhum usuário cadastrado com esse nome" });
+  res
+    .status(400)
+    .send({ error: "Não há nenhum usuário cadastrado com esse nome" });
 });
 
 app.get("/users", (req, res) => {
