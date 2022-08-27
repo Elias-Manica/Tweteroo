@@ -81,15 +81,35 @@ app.get("/users", (req, res) => {
 });
 
 app.get("/tweets", (req, res) => {
+  const { page } = req.query;
+
+  let numberStop = 1;
+
+  if (Number(page) <= 0) {
+    res.status(400).send("Informe uma página válida!");
+    return;
+  }
+
+  let i = tweets.length - 1;
+
+  if (page) {
+    numberStop = Number(page);
+  }
+
+  if (Number(page) > 1) {
+    i = tweets.length - 1 - (numberStop - 1) * 10;
+  }
+
   let tenTweets = [];
 
-  for (let i = tweets.length - 1; i >= 0; i--) {
+  for (i; i >= 0; i--) {
     if (tenTweets.length >= 10) {
       break;
     }
     users.map((user) => {
       if (user.username === tweets[i].username) {
         tenTweets.push({
+          id: tweets[i].id,
           tweet: tweets[i].tweet,
           username: tweets[i].username,
           avatar: user.avatar,
@@ -112,6 +132,7 @@ app.get("/tweets/:username", (req, res) => {
     users.map((user) => {
       if (user.username === filterUser[i].username) {
         tweetsUsername.push({
+          id: filterUser[i].id,
           tweet: filterUser[i].tweet,
           username: filterUser[i].username,
           avatar: user.avatar,
