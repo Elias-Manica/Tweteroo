@@ -87,10 +87,9 @@ app.get("/tweets", (req, res) => {
     if (tenTweets.length >= 10) {
       break;
     }
-    const avatarUser = users.map((user) => {
+    users.map((user) => {
       if (user.username === tweets[i].username) {
         tenTweets.push({
-          id: tweets[i].id,
           tweet: tweets[i].tweet,
           username: tweets[i].username,
           avatar: user.avatar,
@@ -100,6 +99,27 @@ app.get("/tweets", (req, res) => {
   }
 
   res.send(tenTweets);
+});
+
+app.get("/tweets/:username", (req, res) => {
+  let { username } = req.params;
+
+  const filterUser = tweets.filter((value) => value.username === username);
+
+  let tweetsUsername = [];
+
+  for (let i = filterUser.length - 1; i >= 0; i--) {
+    users.map((user) => {
+      if (user.username === filterUser[i].username) {
+        tweetsUsername.push({
+          tweet: filterUser[i].tweet,
+          username: filterUser[i].username,
+          avatar: user.avatar,
+        });
+      }
+    });
+  }
+  res.send(tweetsUsername);
 });
 
 app.listen(5000, () => {
