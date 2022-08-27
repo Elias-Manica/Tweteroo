@@ -75,7 +75,16 @@ app.get("/tweets", (req, res) => {
     if (tenTweets.length >= 10) {
       break;
     }
-    tenTweets.push(tweets[i]);
+    const avatarUser = users.map((user) => {
+      if (user.username === tweets[i].username) {
+        tenTweets.push({
+          id: tweets[i].id,
+          tweet: tweets[i].tweet,
+          username: tweets[i].username,
+          avatar: user.avatar,
+        });
+      }
+    });
   }
 
   res.send(tenTweets);
