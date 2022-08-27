@@ -6,33 +6,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-let users = [
-  {
-    id: 1,
-    username: "bobesponja",
-    avatar:
-      "https://super.abril.com.br/wp-content/uploads/2020/09/04-09_gato_SITE.jpg?quality=70&strip=info",
-  },
-  {
-    id: 2,
-    username: "dog",
-    avatar:
-      "https://super.abril.com.br/wp-content/uploads/2018/05/filhotes-de-cachorro-alcanc3a7am-o-c3a1pice-de-fofura-com-8-semanas1.png?w=1024",
-  },
-];
+let users = [];
 
-let tweets = [
-  {
-    id: 1,
-    username: "bobesponja",
-    tweet: "eu amo o hub",
-  },
-  {
-    id: 2,
-    username: "dog",
-    tweet: "au au au",
-  },
-];
+let tweets = [];
 
 app.post("/sign-up", (req, res) => {
   const { username, avatar } = req.body;
@@ -57,6 +33,32 @@ app.post("/sign-up", (req, res) => {
 
   res.status(201).send("OK");
 });
+
+{
+  /*app.post("/sign-up", (req, res) => {
+  const { user, avatar } = req.headers;
+
+  if (!user || !avatar) {
+    res.status(400).send("Todos os campos são obrigatórios!");
+    return;
+  }
+
+  const userLogin = users.find((value) => value.username === user);
+
+  if (userLogin) {
+    res.status(400).send("Usuário já logado");
+    return;
+  }
+
+  users.push({
+    user,
+    avatar,
+    id: users.length + 1,
+  });
+
+  res.status(201).send("OK");
+});*/
+}
 
 app.post("/tweets", (req, res) => {
   const { username, tweet } = req.body;
