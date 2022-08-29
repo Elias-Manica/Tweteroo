@@ -34,6 +34,8 @@ app.post("/sign-up", (req, res) => {
   res.status(201).send("OK");
 });
 
+//Requesição post com o login por meio de headers
+
 {
   /*app.post("/sign-up", (req, res) => {
   const { user, avatar } = req.headers;
